@@ -1,0 +1,14 @@
+
+$TEST_DEVICE - 6bedc376-7fbe-4c67-8791-cd9999f333a2
+
+$MY_TENANT - 68297be8-b81f-49fd-9303-310e90374d48
+
+$MY_PASS - pass
+
+$MQTT_ADAPTER_IP - hono.eclipseprojects.io
+
+$HTTP_ADAPTER_IP - hono.eclipseprojects.io
+
+$AMQP_NETWORK_IP - hono.eclipseprojects.io
+
+$REGISTRY_IP - hono.eclipseprojects.io
