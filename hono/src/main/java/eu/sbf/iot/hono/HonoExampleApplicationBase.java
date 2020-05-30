@@ -1,12 +1,12 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package eu.sbf.iot.hono;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +32,7 @@ import org.eclipse.hono.util.MessageTap;
 import org.eclipse.hono.util.TimeUntilDisconnectNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Promise;
@@ -39,11 +40,9 @@ import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
 
+
 public class HonoExampleApplicationBase {
-
-
-
-	    public static final String HONO_CLIENT_USER = System.getProperty("username", "consumer@HONO");
+    public static final String HONO_CLIENT_USER = System.getProperty("username", "consumer@HONO");
 	    public static final String HONO_CLIENT_PASSWORD = System.getProperty("password", "verysecret");
 	    public static final Boolean USE_PLAIN_CONNECTION = Boolean.valueOf(System.getProperty("plain.connection", "false"));
 	    public static final Boolean SEND_ONE_WAY_COMMANDS = Boolean.valueOf(System.getProperty("sendOneWayCommands", "false"));
@@ -178,7 +177,7 @@ public class HonoExampleApplicationBase {
 	                    append(", content-type: ").append(msg.getContentType()).
 	                    append(" ]: [").append(content).append("].");
 
-	            
+	            System.out.println(String.format("Received new measurement from %s on location %s with parameter %s and value od %f ", deviceId, location, parameter, value));
 	            HttpClient client = HttpClients.createDefault();
 	            HttpPost post = new HttpPost("http://localhost:8080/data");
 	            List<NameValuePair> params = new ArrayList<NameValuePair>(4);
@@ -189,6 +188,7 @@ public class HonoExampleApplicationBase {
 	            try {
 					post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 					client.execute(post).getStatusLine().getStatusCode();
+					System.out.println("Sensor record successfully sent to server...");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -480,5 +480,4 @@ public class HonoExampleApplicationBase {
 	    private void handleEventMessage(final Message msg) {
 	        printMessage(HonoExampleConstants.TENANT_ID, msg, "event");
 	    }
-	
 }
