@@ -1,0 +1,21 @@
+<body>
+    <div th:fragment="records" th:unless="${#lists.isEmpty(readings)}" id="readings-block" th:id="'readings-block-'+${param}">
+        <table data-classes="table table-hover results" data-striped="true" data-sort-name="Vrijednost" data-sort-order="desc">
+            <thead class="thead-dark">
+                <tr>
+                    <th data-field="Vrijednost" data-sortable="true">Vrijednost</th>
+                    <th data-field="Vrijeme_mjerenja" data-sortable="true">Vrijeme mjerenja</th>               
+                 </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="reading : ${readings}">
+                    <tr>
+                        <td th:text="${reading.value}">value</td>
+                        <td th:text="${#dates.format(reading.timestamp, 'dd.MM.yyyy HH:mm')}">timestamp</td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
