@@ -37,18 +37,15 @@ public class HomeController {
 		query = new Query();
 		query.fields().include("parameter");
 		model.addAttribute("parameters", mongo.findDistinct(query, "parameter", "sensorReading", SensorReading.class, String.class));
-		List<SensorReading> readings = repo.findByLocationAndParameter("Mljet","Temperature");
-		readings.sort(Comparator.comparing(SensorReading::getTimestamp).reversed());
-		model.addAttribute("readings", readings);
 		return "home";
 	}
 	
 	@GetMapping("/chartData/{location}/{parameter}")
 	@ResponseBody
 	public List<Object> data(@PathVariable String location, @PathVariable String parameter, Model model){
-		List<SensorReading> temperatures = repo.findByLocationAndParameter(location, parameter);
+		List<SensorReading> values = repo.findByLocationAndParameter(location, parameter);
 		Format formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-		return temperatures.stream().map(t -> new Object[] {formatter.format(t.getTimestamp()), t.getValue()}).collect(Collectors.toList());
+		return values.stream().map(t -> new Object[] {formatter.format(t.getTimestamp()), t.getValue()}).collect(Collectors.toList());
 	}
 	
 		

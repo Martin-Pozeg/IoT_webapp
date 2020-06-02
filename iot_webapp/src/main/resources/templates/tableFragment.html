@@ -1,10 +1,11 @@
+<html>
 <body>
-    <div th:fragment="records" th:unless="${#lists.isEmpty(readings)}" id="readings-block" th:id="'readings-block-'+${param}">
-        <table data-classes="table table-hover results" data-striped="true" data-sort-name="Vrijednost" data-sort-order="desc">
-            <thead class="thead-dark">
+    <div style="background: #343A40" th:fragment="records" th:unless="${#lists.isEmpty(readings)}" id="readings-block" th:id="'readings-block-'+${param}">
+        <table class="table table-hover table-condensed table-bordered text-center results bg-white" data-striped="true" data-sort-name="Vrijednost" data-sort-order="desc">
+            <thead class="thead-inverse thead-dark">
                 <tr>
-                    <th data-field="Vrijednost" data-sortable="true">Vrijednost</th>
-                    <th data-field="Vrijeme_mjerenja" data-sortable="true">Vrijeme mjerenja</th>               
+                    <th style="width: 50%;" data-field="Vrijednost" data-sortable="true">Vrijednost</th>
+                    <th style="width: 50%;" data-field="Vrijeme_mjerenja" data-sortable="true">Vrijeme mjerenja</th>               
                  </tr>
             </thead>
             <tbody>
