@@ -69,7 +69,7 @@
         }
     </style>
 </head>
-<body class="bg-dark text-white">
+<body style="background: white">
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
         <a class="navbar-brand" href="#" th:href="@{/}">Dineros</a>
         <button  class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,18 +103,18 @@
 
     <div class="vertical-center fixed-middle" id="parent-map">
         <div class="container"><div id="map" class="map-big"></div></div>
-        <div id="accordion" class="acc-margin" style="display: none;margin-left: 6%;">
+        <div id="accordion" class="acc-margin" style="display: none;margin-left: 6%;background: white">
             <th:block th:each="parameter : ${parameters}">
-                <div class="card" style="max-width: 96%;border: none;">
-                    <div class="card-header bg-dark" style="border: none;" th:id="'heading'+${parameter}">
+                <div class="card" style="max-width: 96%;border: none;background: white">
+                    <div class="card-header" style="border: none;background: white" th:id="'heading'+${parameter}">
                         <h5 class="mb-0">
                             <button class="btn btn-outline-success btn-block collapsed text-left" th:attr="onclick=|drawChart('${parameter}'),generateLink('${parameter}')|" data-toggle="collapse" th:data-target="'#collapse'+${parameter}" aria-expanded="true" th:aria-controls="'collapse'+${parameter}" th:text="${parameter}">
                             </button>
                         </h5>
                     </div>
     
-                    <div th:id="'collapse'+${parameter}" class="collapse text-dark bg-dark" th:aria-labelledby="'heading'+${parameter}" data-parent="#accordion">
-                        <div class="card-body bg-dark">
+                    <div th:id="'collapse'+${parameter}" class="collapse text-dark " style="background: white" th:aria-labelledby="'heading'+${parameter}" data-parent="#accordion">
+                        <div class="card-body" style="background: white">
                             <div class="card-title">
                                 <button class="btn btn-outline-danger" data-toggle="collapse" th:data-target="'#chart_'+${parameter}"><span class="fas fa-chart-line"></span></button>
                                 <button th:attr="onclick=|generateTable('${parameter}',1,10)|" type="button" class="btn btn-outline-primary" data-toggle="collapse" th:data-target="'#readings-block-'+${parameter}"><span class="fas fa-table"></span></button>
@@ -201,13 +201,10 @@
                         title : 'Vrijednost ' + parameter + ' izmjerena na lokaciji ' + loc ,
                         width: "80%",
                         height: "100%",
-                        titleTextStyle:{color: '#FFF'},
                         colors: ['#28a745'],
                         legend: {
                         	position: 'none',
-                        	textStyle:{color: '#FFF'}
                 		},
-                        backgroundColor:'#343A40',
                         chartArea: {
                             height: "50%",
                             width: "70%"
@@ -219,11 +216,9 @@
                         hAxis: {
                             format: 'dd/MM/yy',
                             gridlines: {count: 15},
-                        	textStyle:{color: '#FFF'}
                        },
                        vAxis: {
                            gridlines: {count: 5},
-                           textStyle:{color: '#FFF'}
                        }
                     };
             

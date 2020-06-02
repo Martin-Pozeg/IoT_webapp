@@ -1,6 +1,6 @@
 <html>
 <body>
-    <div style="background: #343A40" th:fragment="records" th:unless="${#lists.isEmpty(readings)}" id="readings-block" th:id="'readings-block-'+${param}">
+    <div style="background: white" th:fragment="records" th:unless="${#lists.isEmpty(readings)}" id="readings-block" th:id="'readings-block-'+${param}">
         <table class="table table-hover table-condensed table-bordered text-center results bg-white" data-striped="true" data-sort-name="Vrijednost" data-sort-order="desc">
             <thead class="thead-inverse thead-dark">
                 <tr>

@@ -29,10 +29,13 @@
             justify-content: center;
             max-width: 250px;
         }
+        .black{
+        	background: black;
+        }
         
     </style>
 </head>
-<body class="bg-dark text-white text-center">
+<body class="bg-white text-dark text-center">
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
         <a class="navbar-brand" href="#" th:href="@{/}">Dineros</a>
         <button  class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +59,7 @@
 
         <div class="bg-white text-dark">
             <table style="table-layout: fixed;" data-toggle ="table" class="table table-hover table-condensed table-bordered text-center results" data-striped="true" data-sort-name="Vrijeme_mjerenja" data-sort-order="asc">
-                <thead class="thead-inverse">
+                <thead class="thead-inverse thead-dark">
                     <tr>
                         <th  data-field="Vrijednost" data-sortable="true">Vrijednost</th>
                         <th  data-field="Vrijeme_mjerenja" data-sortable="true">Vrijeme mjerenja</th>               
