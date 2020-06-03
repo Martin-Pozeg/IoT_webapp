@@ -47,21 +47,21 @@
         </div>
     </nav>
 
-    <div th:if="${#lists.isEmpty(readings)}" class="container">
+    <div th:if="${readings.totalPages eq 0}" class="container">
         <h3 th:text="${'Ne postoje mjerenja za senzor na lokaciji ' +location + ' s parametrom ' + parameter}">Ne postoji traženi zapis</h3>
         <div>
             <a th:href="@{/}" >Natrag na početnu stranicu</a>
         </div>
     </div>
 
-    <div th:if="${not #lists.isEmpty(readings)}" class="container">
+    <div th:if="${readings.totalPages gt 0}" class="container">
         <h2 th:text="${'Mjerenja za lokaciju ' + location + ' za parametar ' + parameter}">Mjerenja</h2>
 
         <div class="bg-white text-dark">
             <table style="table-layout: fixed;" data-toggle ="table" class="table table-hover table-condensed table-bordered text-center results" data-striped="true" data-sort-name="Vrijeme_mjerenja" data-sort-order="asc">
                 <thead class="thead-inverse thead-dark">
                     <tr>
-                        <th  data-field="Vrijednost" data-sortable="true">Vrijednost</th>
+                        <th  data-field="Vrijednost" data-sortable="true" th:text="${header}">Vrijednost</th>
                         <th  data-field="Vrijeme_mjerenja" data-sortable="true">Vrijeme mjerenja</th>               
                      </tr>
                 </thead>

@@ -184,7 +184,7 @@
 
 		google.charts.load('current', {'packages':['corechart']});
 		
-				
+
 		function drawChart(parameter) {
 			$.get("/chartData/"+loc+"/"+parameter,function(mydata) {
 			    var test_data = new google.visualization.DataTable();
@@ -196,34 +196,39 @@
     			});
                 test_data.addRows(dataArray);
 			    
-				
-                var options = {
-                        title : 'Vrijednost ' + parameter + ' izmjerena na lokaciji ' + loc ,
-                        width: "80%",
-                        height: "100%",
-                        colors: ['#28a745'],
-                        legend: {
-                        	position: 'none',
-                		},
-                        chartArea: {
-                            height: "50%",
-                            width: "70%"
-                        },
-                        explorer: { 
-                            actions: ['dragToZoom', 'rightClickToReset'], 
-                            axis: 'vertical'
-                        },
-                        hAxis: {
-                            format: 'dd/MM/yy',
-                            gridlines: {count: 15},
-                       },
-                       vAxis: {
-                           gridlines: {count: 5},
-                       }
-                    };
-            
-                var chart1 = new google.visualization.LineChart(document.getElementById('chart_'+parameter));
-                chart1.draw(test_data, options);
+                $.get("/chartData/"+parameter+"/munit", function(mu){
+                	
+                	var options = {
+                            title : 'Vrijednost ' + parameter + ' izmjerena na lokaciji ' + loc ,
+                            width: "80%",
+                            height: "100%",
+                            colors: ['#28a745'],
+                            legend: {
+                            	position: 'none',
+                    		},
+                            chartArea: {
+                                height: "50%",
+                                width: "70%"
+                            },
+                            explorer: { 
+                                actions: ['dragToZoom', 'rightClickToReset'], 
+                                axis: 'horizontal'
+                            },
+                            hAxis: {
+                                format: 'dd/MM/yy',
+                                gridlines: {count: 15},
+                           },
+                           vAxis: {
+                               gridlines: {count: 5},
+                               title: mu,
+                           }
+                        };
+                
+                    var chart1 = new google.visualization.LineChart(document.getElementById('chart_'+parameter));
+                    chart1.draw(test_data, options);
+                });
+                				
+                
                 
                         
             });

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mongodb.BasicDBObject;
 
+import eu.sbf.iot.dineros.model.ParameterEnum;
 import eu.sbf.iot.dineros.model.SensorReading;
 import eu.sbf.iot.dineros.repository.SensorRepo;
 import java.util.Comparator;
@@ -48,5 +49,16 @@ public class HomeController {
 		return values.stream().map(t -> new Object[] {formatter.format(t.getTimestamp()), t.getValue()}).collect(Collectors.toList());
 	}
 	
+	@GetMapping("/chartData/{parameter}/munit")
+	@ResponseBody
+	public String mU(@PathVariable String parameter) {
+		String mu = "";
+		try {
+			mu = ParameterEnum.valueOf(parameter).param;
+		}catch (Exception e) {
+			//do nothing
+		}
+		return mu;
+	}
 		
 }

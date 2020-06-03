@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import eu.sbf.iot.dineros.model.ParameterEnum;
 import eu.sbf.iot.dineros.repository.SensorRepo;
 
 @Controller
@@ -28,6 +29,13 @@ public class ParameterController {
 		int currentPage = page.orElse(1);
         int pageSize = size.orElse(15);
 		model.addAttribute("readings", repo.findByLocationAndParameter(location, parameter, PageRequest.of(currentPage-1, pageSize)));
+		String header = "Vrijednost";
+		try {
+			header = ParameterEnum.valueOf(parameter).param;
+		}catch (Exception e) {
+			//do nothing
+		}
+		model.addAttribute("header", header);
 		return "paramTemplate";
 	}
 	
@@ -42,6 +50,13 @@ public class ParameterController {
         model.addAttribute("readings", repo.findTop10ByLocationAndParameterOrderByTimestampDesc(location, parameter));
 //		model.addAttribute("readings", repo.findByLocationAndParameter(location, parameter, PageRequest.of(currentPage-1, pageSize)));
 		model.addAttribute("param",parameter);
+		String header = "Vrijednost";
+		try {
+			header = ParameterEnum.valueOf(parameter).param;
+		}catch (Exception e) {
+			//do nothing
+		}
+		model.addAttribute("header", header);
 		return "tableFragment :: records";
 	}
 	
@@ -51,5 +66,6 @@ public class ParameterController {
 		model.addAttribute("parameter", parameter);
 		return "linkFragment :: link";
 	}
+	
 	
 }
