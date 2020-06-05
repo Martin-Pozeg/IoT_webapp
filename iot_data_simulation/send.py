@@ -1,4 +1,7 @@
 import os
+import time
+
+from parser import parseDHMZ
 
 from sensors import AqualaboOPTOD
 from sensors import AqualaboPHEHT
@@ -7,11 +10,20 @@ from sensors import AqualaboNTU
 from sensors import AqualaboCTZN
 from sensors import EurekaFluorometer
 
+
+# Is DHMZ data being parsed and used
+IS_DHMZ_PARSING_ACTIVE=True
+
+
 # Constants
 MQTT_ADAPTER_IP="hono.eclipseprojects.io"
-MY_DEVICE="6bedc376-7fbe-4c67-8791-cd9999f333a2"
-MY_TENANT="68297be8-b81f-49fd-9303-310e90374d48"
+MY_DEVICE="636ea23e-45db-4106-b1c7-bdeb14f6861c"
+MY_TENANT="4082acd7-4e7e-4c3d-b2b5-d9e8e056a147"
 MY_PWD="pass"
+
+TIME_TO_SLEEP=900
+TIME_TO_SLEEP_BETWEEN_SENDING_MESSAGE=2
+
 
 # Example of a working command
 # mosquitto_pub -h $MQTT_ADAPTER_IP -u $MY_DEVICE@$MY_TENANT -P $MY_PWD -t telemetry -m '{"temp": -15}'
@@ -20,6 +32,7 @@ def send(location, value):
     print("Sending... " + location + " -> " + value)
     cmd = "mosquitto_pub -h " + MQTT_ADAPTER_IP + " -u " + MY_DEVICE + "@" + MY_TENANT + " -P " + MY_PWD + " -t telemetry -m '{\"" + location + "\": " + value + "}'"
     os.system(cmd)
+    time.sleep(TIME_TO_SLEEP_BETWEEN_SENDING_MESSAGE)
 
 
 # Code starts here
@@ -30,27 +43,61 @@ myAqualaboNTU = AqualaboNTU()
 myAqualaboCTZN = AqualaboCTZN()
 myEurekaFluorometer = EurekaFluorometer()
 
-# Data from sensor AqualaboOPTOD
-send("Temperature", str(myAqualaboOPTOD.getTemperature()))
-send("OxygenSaturation", str(myAqualaboOPTOD.getOxygenSaturation()))
-send("OxygenMgL", str(myAqualaboOPTOD.getOxygenMgL()))
-send("OxygenPpm", str(myAqualaboOPTOD.getOxygenPpm()))
 
-# Data from sensor AqualaboPHEHT
-send("pH", str(myAqualaboPHEHT.getpH()))
-send("RedoxORP", str(myAqualaboPHEHT.getRedoxORP()))
+# Function that sends data from a virtual device
+def virtualDevice(name):
 
-# Data from sensor AqualaboC4E
-send("Conductivity", str(myAqualaboC4E.getConductivity()))
-send("Salinity", str(myAqualaboC4E.getSalinity()))
-send("TDSKcl", str(myAqualaboC4E.getTDSKcl()))
+    # Data from sensor AqualaboOPTOD
+    if (IS_DHMZ_PARSING_ACTIVE):
+        parsedValue = parseDHMZ(name)
+        send(name + "/" + "Temperature", str(parsedValue))
+    else:
+        send(name + "/" + "Temperature", str(myAqualaboOPTOD.getTemperature()))
 
-# Data from sensor AqualaboNTU
-send("NephelometricTutrbidity", str(myAqualaboNTU.getNephelometricTurbidity()))
-send("SS", str(myAqualaboNTU.getSS()))
+    send(name + "/" + "OxygenSaturation", str(myAqualaboOPTOD.getOxygenSaturation()))
+    send(name + "/" + "OxygenMgL", str(myAqualaboOPTOD.getOxygenMgL()))
+    send(name + "/" + "OxygenPpm", str(myAqualaboOPTOD.getOxygenPpm()))
 
-# Data from sensor AqualaboCTZN
-send("ConductivityNCWT", str(myAqualaboCTZN.getConductivityNCWT()))
+    # Data from sensor AqualaboPHEHT
+    send(name + "/" + "pH", str(myAqualaboPHEHT.getpH()))
+    send(name + "/" + "RedoxORP", str(myAqualaboPHEHT.getRedoxORP()))
 
-# Data from sensor EurekaFluorometer
-send("CDOMfDOM", str(myEurekaFluorometer.getCDOMfDOM()))
+    # Data from sensor AqualaboC4E
+    send(name + "/" + "Conductivity", str(myAqualaboC4E.getConductivity()))
+    send(name + "/" + "Salinity", str(myAqualaboC4E.getSalinity()))
+    send(name + "/" + "TDSKcl", str(myAqualaboC4E.getTDSKcl()))
+
+    # Data from sensor AqualaboNTU
+    send(name + "/" + "NephelometricTutrbidity", str(myAqualaboNTU.getNephelometricTurbidity()))
+    send(name + "/" + "SS", str(myAqualaboNTU.getSS()))
+
+    # Data from sensor AqualaboCTZN
+    send(name + "/" + "ConductivityNCWT", str(myAqualaboCTZN.getConductivityNCWT()))
+
+    # Data from sensor EurekaFluorometer
+    send(name + "/" + "CDOMfDOM", str(myEurekaFluorometer.getCDOMfDOM()))
+
+
+# Main thread
+if __name__ == "__main__":
+
+    try:
+
+        while True:
+
+            virtualDevice("Unije")
+            virtualDevice("Susak")
+            virtualDevice("Ilovik")
+            virtualDevice("Premuda")
+            virtualDevice("Tramerka")
+            virtualDevice("Kornati")
+            virtualDevice("Mljet")
+            virtualDevice("Cavtat")
+            virtualDevice("Plavnik")
+            virtualDevice("Vir")
+
+            time.sleep(TIME_TO_SLEEP)
+
+    except KeyboardInterrupt:
+
+        pass
