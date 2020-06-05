@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<!--  link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dineros</title>
+
+    <style type="text/css">
+        .results tr[visible='false'],
+        .no-result{
+            display:none;
+        }
+        .results tr[visible='true']{
+            display:table-row;
+        }
+        .counter{
+		 	padding:8px; 
+		  	color:#ccc;
+		}
+        .navbar{
+            margin-bottom: 1%;
+        }
+        .search{
+            width: 20%;
+            min-width: 200px;
+            justify-content: center;
+            max-width: 250px;
+        }
+        .black{
+        	background: black;
+        }
+        
+    </style>
+</head>
+<body class="bg-white text-dark text-center">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <a class="navbar-brand" href="#" th:href="@{/}">Dineros</a>
+        <button  class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <input type="text" class="search form-control mr-sm-2 my-2 my-sm-0" placeholder="Pretraga">
+        </div>
+    </nav>
+
+    <div th:if="${readings.totalPages eq 0}" class="container">
+        <h3 th:text="${'Ne postoje mjerenja za senzor na lokaciji ' +location + ' s parametrom ' + parameter}">Ne postoji traženi zapis</h3>
+        <div>
+            <a th:href="@{/}" >Natrag na početnu stranicu</a>
+        </div>
+    </div>
+
+    <div th:if="${readings.totalPages gt 0}" class="container">
+        <h2 th:text="${'Mjerenja za lokaciju ' + location + ' za parametar ' + parameter}">Mjerenja</h2>
+
+        <div class="bg-white text-dark">
+            <table style="table-layout: fixed;" data-toggle ="table" class="table table-hover table-condensed table-bordered text-center results" data-striped="true" data-sort-name="Vrijeme_mjerenja" data-sort-order="asc">
+                <thead class="thead-inverse thead-dark">
+                    <tr>
+                        <th  data-field="Vrijednost" data-sortable="true" th:text="${header}">Vrijednost</th>
+                        <th  data-field="Vrijeme_mjerenja" data-sortable="true">Vrijeme mjerenja</th>               
+                     </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="reading : ${readings}">
+                        <tr>
+                            <td th:text="${reading.value}">value</td>
+                            <td th:text="${#dates.format(reading.timestamp, 'dd.MM.yyyy HH:mm')}">timestamp</td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+        
+        <nav aria-label="Paginacija" th:if="${readings.totalPages gt 0}">
+            <ul class="pagination justify-content-center font-weight-medium">
+                <li class="page-item" th:classappend="${readings.number eq 0} ? 'disabled'">
+                    <a class="page-link svg-icon"
+                    th:href="@{/sensor/{location}/{parameter}?page={id}(location=${location},parameter=${parameter},id=${readings.number lt 2 ? 1 : readings.number})}"
+                    aria-label="Prošla"
+                    title="Prošla stranica" rel="tooltip">
+                        <span aria-hidden="true" width="20" height="20">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:classappend="${i eq readings.number + 1} ? 'active'"
+                    th:each="i : ${#numbers.sequence( readings.number + 1, readings.totalPages > 5 + readings.number ? readings.number + 5 : readings.totalPages, 1)}">
+                    <a class="page-link" th:href="@{/sensor/{location}/{parameter}?page={id}(location=${location},parameter=${parameter},id=${i})}" th:text="${i}"
+                    th:title="${'Stranica '+ i}"
+                    rel="tooltip"></a>
+                </li>
+                <li class="page-item disabled" th:if="${readings.number + 5 < readings.totalPages}">
+                    <a class="page-link svg-icon" href="#">
+                        <span width="20" height="20">&hellip;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:classappend="${readings.number + 1 eq readings.totalPages} ? 'disabled'">
+                    <a class="page-link svg-icon" th:href="@{/sensor/{location}/{parameter}?page={id}(location=${location},parameter=${parameter},id=${readings.number + 2})}"
+                    aria-label="Sljedeća"
+                    title="Sljedeća stranica" rel="tooltip">
+                        <span aria-hidden="true" width="20" height="20">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{/js/search.js}"></script>
+    <script type="text/javascript" th:src="@{/js/sort.js}"></script>
+    
+    
+    
+
+</body>
+</html>

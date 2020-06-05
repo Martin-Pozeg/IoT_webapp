@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Built-By: Dominik
+Class-Path: hono-client-1.2.2.jar vertx-proton-3.8.5.jar vertx-core-3.
+ 8.5.jar netty-common-4.1.42.Final.jar netty-buffer-4.1.42.Final.jar n
+ etty-transport-4.1.42.Final.jar netty-handler-4.1.42.Final.jar netty-
+ codec-4.1.42.Final.jar netty-handler-proxy-4.1.42.Final.jar netty-cod
+ ec-socks-4.1.42.Final.jar netty-codec-http-4.1.42.Final.jar netty-cod
+ ec-http2-4.1.42.Final.jar netty-resolver-4.1.42.Final.jar netty-resol
+ ver-dns-4.1.42.Final.jar netty-codec-dns-4.1.42.Final.jar jackson-cor
+ e-2.9.9.jar proton-j-0.33.3.jar hono-core-1.2.2.jar jjwt-impl-0.10.6.
+ jar jjwt-api-0.10.6.jar jjwt-jackson-0.10.6.jar jaxb-api-2.2.12.jar j
+ ackson-databind-2.10.3.jar jackson-annotations-2.10.3.jar opentracing
+ -api-0.33.0.jar spring-security-crypto-5.2.2.RELEASE.jar opentracing-
+ noop-0.33.0.jar httpclient-4.5.12.jar httpcore-4.4.13.jar commons-log
+ ging-1.2.jar commons-codec-1.11.jar slf4j-api-1.7.28.jar slf4j-log4j1
+ 2-1.7.28.jar log4j-1.2.17.jar
+Build-Jdk: 1.8.0_191
+Created-By: Maven Integration for Eclipse
+Main-Class: eu.sbf.iot.hono.HonoExampleApplication
+
